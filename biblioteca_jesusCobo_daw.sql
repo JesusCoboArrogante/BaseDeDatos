@@ -1,4 +1,5 @@
-use bdbiblioteca;
+create database bdBiblio;
+use bdBiblio;
 create table Libro(
 nCodLibro int (10) not null primary key,
 cTitulo varchar (15) not null,
@@ -19,15 +20,17 @@ nCodTema int (10) not null primary key,
 cNombre varchar (20) not null
 );
 
+create table Pais (
+cCodPais char (3) not null primary key,
+cNombre varchar (56) not null
+);
+
 create table Editorial(
 nCodEditorial int (10) not null primary key,
 cNombre varchar (10) not null,
-direccion varchar (50) not null
-);
-
-create table Pais (
-cCodPais char (2) not null primary key,
-cNombre varchar (56) not null
+direccion varchar (50) not null,
+cCodPais char(3) not null,
+foreign key (cCodPais) references Pais(cCodPais)
 );
 
 
@@ -43,7 +46,7 @@ foreign key (nCodAutor) references Autor(nCodAutor)
 
 create table AutorPais(
 nCodAutor int (10) not null,
-cCodPais char (2) not null,
+cCodPais char (3) not null,
 primary key (nCodAutor,cCodPais),
 foreign key (nCodAutor) references Autor(nCodAutor),
 foreign key (cCodPais) references Pais(cCodPais)
@@ -78,10 +81,6 @@ add constraint
 foreign key (cSignatura) references ejemplar(cSignatura);
 
 
-alter table editorial
-add cCodPais char(2) not null,
-add constraint 
-foreign key (cCodPais) references Pais(cCodPais);
 
 alter table Libro
 add nCodEditorial int (10) not null,
