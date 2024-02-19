@@ -32,7 +32,11 @@ order by numde, nomem asc, year(now())-year(fecna) asc, year(now())-year(fecin) 
 /*ejercicio08*/
 select numhi, max(salar), min(salar)from temple 
 group by numhi 
-having  count(nomem) > 1 and max(salar) > 200;
+having  count(nomem) > 1 and max(salar) > 200 and numhi>0;
+
+select DISTINCT tdepto.numde, temple.extel  from tdepto 
+inner join temple on tdepto.numde = temple.numde
+where nomde not like 'DIRECC%' and nomde not like 'Sector%' ;
 
 
 select *from tdepto;
