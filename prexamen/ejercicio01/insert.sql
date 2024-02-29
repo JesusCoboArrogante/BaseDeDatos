@@ -14,5 +14,9 @@ insert into tproducto (nombre, precio) values
 ('pantalon', 35.00),
 ('zapatillas', 50.00);
 
-select * from tproducto 
-;
+insert into torden_productor (id_orden,id_producto,cantidad) values
+(1,1,2),
+(1,2,1),
+(2,2,3),
+(3,3,1),
+(3,1,2);

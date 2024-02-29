@@ -23,6 +23,7 @@ precio double
 create table torden_productor(
 	id_orden int, 
     id_producto int,
+    cantidad int,
     primary key (id_orden, id_producto),
     foreign key (id_orden) references Torden (id_orden) ON DELETE CASCADE,
     foreign key (id_producto) references Tproducto (id_producto)ON DELETE CASCADE
