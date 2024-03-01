@@ -1,7 +1,6 @@
 /*1.	¿Cuántos clientes hay en la base de datos?*/
 		select count(*) from tcliente;
         
-        
 /*2.	Insertar un nuevo cliente en la tabla clientes.*/
 		select * from tcliente;
 		insert into tcliente (nombre, apellido,email) values

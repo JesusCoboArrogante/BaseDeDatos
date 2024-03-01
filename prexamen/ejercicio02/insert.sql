@@ -19,3 +19,4 @@ insert into tventas (id_libro, id_cliente, fecha, cantidad) values
 (6,5,"2024-02-10",3),
 (1,2,"2024-02-20",1),
 (5,4,"2024-03-05",2);
+

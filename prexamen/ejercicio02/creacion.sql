@@ -1,5 +1,5 @@
-create database libreria;
-use libreria;
+create database ejercicio02;
+use ejercicio02;
 create table tlibro(
 id_libro int auto_increment primary key,
 titulo varchar (50),
@@ -24,4 +24,5 @@ foreign key (id_cliente) references tcliente (id_cliente) ON UPDATE CASCADE ON D
 fecha date,
 cantidad int
 );
+
 
