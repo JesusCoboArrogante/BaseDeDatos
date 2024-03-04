@@ -7,8 +7,6 @@ a_nombre varchar (10),
 apellido varchar (10),
 fx_naci date,
 grado int,
-direccion varchar(50),
-telefono varchar (12),
 correo varchar (25)
 );
 
@@ -40,6 +38,7 @@ foreign key (id_asignatura)
 references tasiginatura(id_asignatura) 
 on update cascade 
 on delete cascade
+
 );
 
 create table tcalificacion(
@@ -51,3 +50,6 @@ on update cascade
 on delete cascade,
 calificacion int
 );
+
+
+
