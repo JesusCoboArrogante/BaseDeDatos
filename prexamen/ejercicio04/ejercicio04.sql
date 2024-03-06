@@ -14,4 +14,6 @@ where especialidad = "cardiologia";
 
 delete from tconsulta
 right inner tdoctor on tdoctor.id_doctor = tconsulta.id_doctor
-where tconsulta.id_doctor is null
+where tconsulta.id_doctor is null;
+
+show columns from tconsultas
