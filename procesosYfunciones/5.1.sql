@@ -58,6 +58,6 @@ no sql
 begin 
 return sqrt(pow(ladoUno,2) + pow(ladoDos,2));
 end$$
-select hipotenusa(3,4)
+select hipotenusa(3,4);
 
 
