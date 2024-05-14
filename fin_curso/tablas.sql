@@ -1,6 +1,5 @@
 create database netflixclub;
 use netflixclub;
-
 create table empleado(
 id_empleado  int auto_increment primary key,
 nombre varchar (10) ,
@@ -69,7 +68,7 @@ fx_adquisicion date,
 fx_devolucion date,
 id_tienda int,
 cantidad int (2),
-devuelta int (2),
+devuelta int (2) default 0,
 foreign key (id_tienda) references tienda(id_tienda),
 foreign key (id_cliente) references cliente(id_cliente),
 foreign key (id_tipopelicula) references tipopelicula (id_tipopelicula)
