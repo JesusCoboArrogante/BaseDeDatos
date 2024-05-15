@@ -18,37 +18,50 @@ id_empleado int,
 fecha date,
 id_tienda int,
 primary key(id_empleado,fecha),
-foreign key (id_empleado) references empleado(id_empleado),
+foreign key (id_empleado) references empleado(id_empleado)
+on delete cascade 
+on update cascade,
 foreign key (id_tienda) references tienda(id_tienda)
+on delete cascade 
+on update cascade
 );
 
 create table pelicula (
 id_pelicula int auto_increment primary key,
-nombre varchar (20),
+nombre varchar (100),
 anyo int (4),
 edad int (3)
 );
 create table genero (
-id_genero varchar (10) primary key
+id_genero varchar (30) primary key
 );
 alter table genero add constraint id_genero check(id_genero in ('accion', 'aventura', 'ciencia ficcion', 'comedia', 'documentales', 'drama', 'fantasia', 'musicales', 'suspense', 'terror'));
 
 create table generoPelicula(
-id_genero varchar (10),
+id_genero varchar (30),
 id_pelicula int,
 primary key (id_pelicula, id_genero),
-foreign key (id_genero) references genero(id_genero),
+foreign key (id_genero) references genero(id_genero)
+on delete cascade on update cascade,
 foreign key (id_pelicula) references pelicula(id_pelicula)
+on delete cascade 
+on update cascade
 );
 
 create table tipoPelicula(
 id_tipopelicula int auto_increment primary key,
 id_pelicula int,
 num_peliculas int (2),
-peliculas_alquiladas int (2),
+peliculas_alquiladas int (2) default 0,
+tipo varchar (10),
 id_tienda int,
-foreign key (id_tienda) references tienda(id_tienda),
+foreign key (id_tienda) references tienda(id_tienda)
+on delete cascade 
+on update cascade,
 foreign key (id_pelicula) references pelicula (id_pelicula)
+on delete cascade 
+on update cascade
+
 );
 
 create table cliente(
@@ -69,9 +82,15 @@ fx_devolucion date,
 id_tienda int,
 cantidad int (2),
 devuelta int (2) default 0,
-foreign key (id_tienda) references tienda(id_tienda),
-foreign key (id_cliente) references cliente(id_cliente),
+foreign key (id_tienda) references tienda(id_tienda)
+on delete cascade 
+on update cascade,
+foreign key (id_cliente) references cliente(id_cliente)
+on delete cascade 
+on update cascade,
 foreign key (id_tipopelicula) references tipopelicula (id_tipopelicula)
+on delete cascade 
+on update cascade
 );
 create table retrasos(
 id_cliente int,
