@@ -24,7 +24,6 @@ turno varchar (6),
 entrada varchar (5),
 salida varchar (5)
 );
-
 create table empleadoHorario(
 id_empleado int (2),
 id_horario int (1),
@@ -45,7 +44,8 @@ edad int (3) not null
 );
 
 create table genero (
-id_genero varchar (30) primary key
+id_genero char (2) primary key,
+nombre varchar (30) 
 );
 
 
@@ -54,7 +54,8 @@ id_genero varchar (30),
 id_pelicula int (2),
 primary key (id_pelicula, id_genero),
 foreign key (id_genero) references genero(id_genero)
-on update cascade,
+on update cascade
+on delete cascade,
 foreign key (id_pelicula) references pelicula(id_pelicula)
 on delete cascade
 on update cascade
@@ -74,9 +75,11 @@ id_cliente int (2) auto_increment primary key,
 nombre varchar(10),
 apellido varchar(10),
 telefono int (9) unique,
-edad int null,
-anyo_nacimiento year not null,
-check (edad >= 15)
+edad int not null,
+mes_anyo  char (7) not null,
+autoriza int (2),
+check (edad >= 15),
+foreign key (autoriza) references cliente(id_cliente)
 );
 
 
@@ -96,16 +99,6 @@ foreign key (id_stock) references stock (id_stock)
 on delete cascade
 on update cascade
 );
-
-create table stockAlquiler(
-id_alquiler int (2),
-id_stock int (2),
-primary key(id_alquiler,id_stock),
-foreign key (id_alquiler) references alquiler(id_alquiler)
-on delete cascade,
-foreign key (id_stock) references stock (id_stock)
-on delete cascade
-); 
 
 
 create table retrasos(
@@ -131,16 +124,4 @@ foreign key (id_stock) references stock(id_stock)
 on delete cascade
 on update cascade
 );
-
-create table tiendaalquiler (
-id_tienda int,
-id_alquiler int,
-primary key (id_tienda,id_alquiler),
-foreign key (id_tienda) references tienda (id_tienda)
-on delete cascade
-on update cascade,
-foreign key (id_alquiler) references alquiler (id_alquiler)
-on delete cascade
-on update cascade
-)
-
+ 

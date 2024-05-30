@@ -24,7 +24,6 @@ delimiter ;
 call menor();
 
 /*menor de edad*/
-drop trigger if exists menores 
 delimiter //
 create trigger menores
 before insert on alquiler
@@ -43,7 +42,9 @@ if edad_cliente < edad_pelicula then
 call menor();
 end if;
 end //;
-
+insert into alquiler (id_cliente, id_stock, fx_adquisicion, fx_devolucion, cantidad, devuelta)
+values
+(4,2,"2024-02-01","2024-02-03",1,0);
 
 /*recargo por retraso*/
 set global event_scheduler = on;
@@ -63,21 +64,38 @@ SHOW EVENTS;
 drop event if exists edad_cliente;
 delimiter //
 create event cambio_edad
-on schedule every 1 year 
-starts '2024-01-01 00:00:01'
+on schedule every 1 month
+starts current_timestamp
 do
 update cliente set edad = edad + 1;
+where
+	month(mes_anyo) = month(curdate())
+    
+update cliente set autoriza = null
+where edad > 18 
+
 end //
 delimiter ;
 SHOW EVENTS;
-
+/*----------------------------------------------------------------------------------------------------------------------------------------------------------*/
+drop view caradura;
 create view caradura as 
-select cliente.nombre, cliente.apellido, cliente.telefono, alquiler.fx_devolucion, retrasos.dias, retrasos.debido from alquiler 
-inner join retrasos on alquiler.id_alquiler = retrasos.id_alquiler
-inner join cliente on alquiler.id_cliente = cliente.id_cliente;
-select * from caradura
+SELECT cliente.telefono, cliente.nombre, cliente.apellido, pelicula.nombre as pelicula,  fx_adquisicion, alquiler.fx_devolucion, retrasos.dias, retrasos.debido
+FROM alquiler
+INNER JOIN retrasos ON alquiler.id_alquiler = retrasos.id_alquiler
+INNER JOIN cliente ON alquiler.id_cliente = cliente.id_cliente
+INNER JOIN stock ON alquiler.id_stock = stock.id_stock
+INNER JOIN pelicula ON stock.id_pelicula = pelicula.id_pelicula;
+select * from caradura;
 
 
+select pelicula.nombre from generopelicula
+inner join pelicula on pelicula.id_pelicula = generopelicula.id_pelicula
+inner join genero on genero.id_genero = generopelicula.id_genero 
+where genero.nombre = "accion";
+
+select * from pelicula
+where edad < 10;
 
 
 

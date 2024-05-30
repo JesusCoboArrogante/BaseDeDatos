@@ -1,23 +1,23 @@
 insert into tienda (localidad,calle,telefono)
 values
-("madrid","c/ gran via",323456789),
-("alcala","c/ calle mayor",634567890),
-("getafe","avenida españa",945678901),
-("leganes","c/ real",556789012),
-("mostoles","plaza del pradillo",156789012);
+("madrid","c/ gran via",612345678),
+("alcala","c/ calle mayor",722345678),
+("getafe","avenida españa",634567891), 
+("leganes","c/ real",745678901),
+("mostoles","plaza del pradillo",656789012);
 
 insert into empleado (nombre, apellido,telefono, id_tienda)
 values
-("juan", "lopez",223456789,2),
-("maria","martinez",887654321,2),
-("jose","garcia",334567890,5),
-("laura","perez",445678901,4),
-("carlos","gomez",556789012,3),
-("ana","ruiz",114748364,3),
-("sofia","fernandez",778901234,5),
-("miguel","diaz",289012345,1),
-("lucia","sanchez",990123456,1),
-("david","torres",001234567,4);
+("juan", "lopez",767890123,2),
+("maria","martinez",678901234,2),
+("jose","garcia",789012345,5),
+("laura","perez",890123456,4),
+("carlos","gomez",812345679,3),
+("ana","ruiz",812345678,3),
+("sofia","fernandez",923456789,5),
+("miguel","diaz",834567890,1),
+("lucia","sanchez",945678901,1),
+("david","torres",856789012,4);
 
 
 
@@ -38,42 +38,41 @@ values
 
 
 
-insert into genero (id_genero)
+insert into genero (id_genero,nombre)
 values
-("accion"),
-("aventura"),
-("ciencia ficcion"),
-("comedia"),
-("documentales"),
-("drama"),
-("fantasia"),
-("musicales"),
-("suspense"),
-("terror");
+("AC","accion"),
+("AV","aventura"),
+("CF","ciencia ficcion"),
+("CM","comedia"),
+("DC","documentales"),
+("DM","drama"),
+("FT","fantasia"),
+("MS","musicales"),
+("SS","suspense"),
+("TR","terror");
 
 insert into generopelicula (id_genero,id_pelicula)
 values 
-("accion",1),
-("drama",2),
-("aventura",2),
-("aventura",3),
-("accion",4),
-("drama",4),
-("comedia",5);
+("AC",1),
+("DM",2),
+("AV",2),
+("AV",3),
+("AC",4),
+("DM",4),
+("CM",5);
 
-insert into cliente (nombre,apellido,telefono,edad,anyo_nacimiento)
+insert into cliente (nombre,apellido,telefono,edad,mes_anyo,autoriza)
 values
-("pedro","gonzalez",123456789,33,1991),
-("ana","martinez",234567890,25,1999),
-("david","sanchez",345678901,29,1995),
-("laura","gonzalez",456789012,15,2010),
-("carlos","perez",567890123,37,1987),
-("maria","ruiz",678901234,48,1976),
-("jorge","fernandez",789012345,22,2002),
-("claudia","diaz",214748364,17,2007),
-("elena","sanchez",901234567,35,1989),
-("pablo","torres",912345678,27,1997);
-
+("pedro","gonzalez",967890123,33,"03-1991",null),
+("ana","martinez",878901234,25,"05-1999", null),
+("david","sanchez",989012345,29,"12-1995",	null),
+("laura","gonzalez",890123456,15,"28-2010",1),
+("carlos","perez",901234567,37,"10-1987",null),
+("maria","ruiz",712345678,48,"06-1976",null),
+("jorge","fernandez",823456789,22,"01-2002",null),
+("claudia","diaz",934567890,17,"02-2007", 5),
+("elena","sanchez",845678901,35,"06-1989",null),
+("pablo","torres",956789012,27,"07-1997",null);
 
 
 insert into stock (id_stock,id_pelicula, total)
@@ -171,10 +170,3 @@ values
 (5,4,5,0),
 (5,5,5,0);
 
-insert into tiendaalquiler (id_tienda,id_alquiler)
-value 
-(1,2),
-(3,5),
-(4,1),
-(1,1),
-(2,4);
