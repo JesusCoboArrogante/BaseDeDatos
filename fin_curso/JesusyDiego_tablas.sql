@@ -1,6 +1,6 @@
-drop database netflixclub;
-create database netflixclub;
-use netflixclub;
+drop database motrix;
+create database motrix;
+use motrix;
 create table tienda(
 id_tienda int (2) auto_increment primary key,
 localidad varchar (10),
@@ -76,7 +76,7 @@ nombre varchar(10),
 apellido varchar(10),
 telefono int (9) unique,
 edad int not null,
-mes_anyo  char (7) not null,
+cumpleaños  date not null,
 autoriza int (2),
 check (edad >= 15),
 foreign key (autoriza) references cliente(id_cliente)

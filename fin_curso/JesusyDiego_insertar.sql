@@ -61,18 +61,18 @@ values
 ("DM",4),
 ("CM",5);
 
-insert into cliente (nombre,apellido,telefono,edad,mes_anyo,autoriza)
+insert into cliente (nombre,apellido,telefono,edad,cumpleaños,autoriza)
 values
-("pedro","gonzalez",967890123,33,"03-1991",null),
-("ana","martinez",878901234,25,"05-1999", null),
-("david","sanchez",989012345,29,"12-1995",	null),
-("laura","gonzalez",890123456,15,"28-2010",1),
-("carlos","perez",901234567,37,"10-1987",null),
-("maria","ruiz",712345678,48,"06-1976",null),
-("jorge","fernandez",823456789,22,"01-2002",null),
-("claudia","diaz",934567890,17,"02-2007", 5),
-("elena","sanchez",845678901,35,"06-1989",null),
-("pablo","torres",956789012,27,"07-1997",null);
+("pedro","gonzalez",967890123,33,'1991-03-01',null),
+("ana","martinez",878901234,25,'1999-05-01', null),
+("david","sanchez",989012345,29,'1995-12-01',	null),
+("laura","gonzalez",890123456,15,'2010-08-01',1),
+("carlos","perez",901234567,37,'1987-10-01',null),
+("maria","ruiz",712345678,48,'1976-06-01',null),
+("jorge","fernandez",823456789,22,'2002-01-01',null),
+("claudia","diaz",934567890,17,'2007-06-01', 5),
+("elena","sanchez",845678901,35,'1989-01-01',null),
+("pablo","torres",956789012,27,'1997-07-01',null);
 
 
 insert into stock (id_stock,id_pelicula, total)
