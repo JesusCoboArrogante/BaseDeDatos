@@ -82,12 +82,24 @@ check (edad >= 15),
 foreign key (autoriza) references cliente(id_cliente)
 );
 
-
+create table tiendastock (
+id_tiendastock int primary key auto_increment,
+id_tienda int,
+id_stock int,
+num_peliculas int,
+peliculas_alquiladas int default 0,
+foreign key (id_tienda) references tienda(id_tienda)
+on delete cascade
+on update cascade,
+foreign key (id_stock) references stock(id_stock)
+on delete cascade
+on update cascade
+);
 
 create table alquiler(
 id_alquiler int (2) auto_increment primary key,
 id_cliente int (2),
-id_stock int (2),
+id_tiendastock int,
 fx_adquisicion date,
 fx_devolucion date,
 cantidad int (2) default 1,
@@ -95,7 +107,7 @@ devuelta int (2) default 0,
 foreign key (id_cliente) references cliente (id_cliente)
 on delete cascade
 on update cascade,
-foreign key (id_stock) references stock (id_stock)
+foreign key (id_tiendastock) references tiendastock (id_tiendastock)
 on delete cascade
 on update cascade
 );
@@ -111,17 +123,5 @@ on delete cascade
 on update cascade
 );
 
-create table tiendastock (
-id_tienda int,
-id_stock int,
-num_peliculas int,
-peliculas_alquiladas int default 0,
-primary key (id_tienda, id_stock),
-foreign key (id_tienda) references tienda(id_tienda)
-on delete cascade
-on update cascade,
-foreign key (id_stock) references stock(id_stock)
-on delete cascade
-on update cascade
-);
+
  

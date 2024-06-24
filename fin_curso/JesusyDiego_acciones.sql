@@ -1,7 +1,7 @@
 /*Procedimiento*/
 use motrix;
 /*para saber los empleados a que hora tienen que entrar*/
-DROP PROCEDURE IF EXISTS horario;
+drop procedure if exists horario;
 delimiter //
 create procedure horario (in id_empleado int)
 begin
@@ -13,6 +13,7 @@ where empleadohorario.id_empleado = id_empleado;
 end // 
 delimiter ;
 call horario(2);
+
 
 /*busqueda de pelicula*/
 drop procedure if exists busqueda;
@@ -39,9 +40,11 @@ begin
  
 end //
 delimiter ;
-/*call menor();*/
+call menor();
 /*-------------------------------------------------------------------------------------------------------------------------*/
+/*trigger*/
 /*menor de edad*/
+drop trigger if exists menores
 delimiter //
 create trigger menores
 before insert on alquiler
@@ -49,21 +52,107 @@ for each row
 begin
 declare edad_cliente int;
 declare edad_pelicula int;
-SELECT edad INTO edad_cliente FROM cliente
-WHERE id_cliente = new.id_cliente
-LIMIT 1;
-SELECT pelicula.edad INTO edad_pelicula FROM stock
-INNER JOIN pelicula ON stock.id_pelicula = pelicula.id_pelicula
-WHERE stock.id_stock = new.id_stock
-LIMIT 1;
+select edad into edad_cliente from cliente
+where id_cliente = new.id_cliente;
+
+select pelicula.edad into edad_pelicula from tiendastock
+inner join stock on stock.id_stock = tiendastock.id_stock
+inner join pelicula on stock.id_pelicula = pelicula.id_pelicula
+where tiendastock.id_tiendastock = new.id_tiendastock;
+
 if edad_cliente < edad_pelicula then
 call menor();
 end if;
 end //;
-insert into alquiler (id_cliente, id_stock, fx_adquisicion, fx_devolucion, cantidad, devuelta)
+insert into alquiler (id_cliente, id_tiendastock, fx_adquisicion, fx_devolucion, cantidad, devuelta)
 values
 (4,2,"2024-02-01","2024-02-03",1,0);
-/*-------------------------------------------------------------------------------------------------------------------------------------------*/
+select * from cliente
+where id_cliente = 4
+
+drop trigger if exists automatica;
+delimiter //
+create trigger automatica
+after update on alquiler
+for each row
+begin 
+declare tiendastock_devuelta int;
+declare alquiladas_devuelta int;
+declare resultado int;
+select peliculas_alquiladas into tiendastock_devuelta from tiendastock
+where id_tiendastock = new.id_tiendastock ;
+select devuelta into alquiladas_devuelta from alquiler
+where id_alquiler = new.id_alquiler;
+set resultado = tiendastock_devuelta - alquiladas_devuelta;
+ update tiendastock
+    set peliculas_alquiladas = resultado
+    where id_tiendastock = new.id_tiendastock;
+end // 
+delimiter ;
+
+update alquiler 
+set devuelta = devuelta + 1
+where id_alquiler = 2;
+
+select tiendastock.* from tiendastock
+inner join alquiler on tiendastock.id_tiendastock = alquiler.id_tiendastock
+where id_alquiler = 2;
+
+
+drop trigger if exists automatica01;
+delimiter //
+create trigger automatica01
+after insert on alquiler
+for each row
+begin 
+declare tiendastock_alquiladas int;
+declare alquiladas_devuelta int;
+declare resultado int;
+select peliculas_alquiladas into tiendastock_alquiladas from tiendastock
+where id_tiendastock = new.id_tiendastock ;
+select cantidad into alquiladas_devuelta from alquiler
+where id_alquiler = new.id_alquiler;
+set resultado = tiendastock_alquiladas + alquiladas_devuelta;
+ update tiendastock
+    set peliculas_alquiladas = resultado
+    where id_tiendastock = NEW.id_tiendastock;
+end // 
+delimiter ; 
+insert into alquiler (id_cliente, id_tiendastock, fx_adquisicion, fx_devolucion, cantidad, devuelta)
+values
+(1,2,"2024-02-01","2024-02-03",1,0);
+
+select tiendastock.* from tiendastock
+inner join alquiler on tiendastock.id_tiendastock = alquiler.id_tiendastock
+where id_alquiler = 6;
+
+
+show triggers;
+/*----------------------------------------------------------------------------------------------------------------------------------------------------------*/
+/*consultas*/
+/*identificar a lo que no han devuelto pelicula*/
+drop view caradura;
+create view caradura as 
+select cliente.telefono, cliente.nombre, cliente.apellido, pelicula.nombre as pelicula, fx_adquisicion, fx_devolucion, retrasos.dias, retrasos.debido
+from alquiler
+inner join retrasos on alquiler.id_alquiler = retrasos.id_alquiler
+inner join cliente  on alquiler.id_cliente = cliente.id_cliente
+inner join tiendastock on tiendastock.id_tiendastock = alquiler.id_tiendastock
+inner join stock on tiendastock.id_stock = stock.id_stock
+inner join pelicula  on stock.id_pelicula = pelicula.id_pelicula;
+select * from caradura;
+
+
+select pelicula.nombre from generopelicula
+inner join pelicula on pelicula.id_pelicula = generopelicula.id_pelicula
+inner join genero on genero.id_genero = generopelicula.id_genero 
+where genero.nombre = "accion";
+
+select * from pelicula
+where edad < 10;
+
+/*------------------------------------------------------------------------------------------------------------------------------------------*/
+/*eventos*/
 /*recargo por retraso*/
 set global event_scheduler = on;
 drop event if exists extra;
@@ -77,7 +166,8 @@ update retrasos set dias = dias + 1;
 update retrasos set debido = dias * 0.20;
 end //;
 delimiter ;
-SHOW EVENTS;
+show events;
+select * from retrasos;
 
 /*aumentar la edad de los clientes*/
 drop event if exists cambio_edad;
@@ -93,26 +183,8 @@ update cliente set autoriza = null
 where edad >= 18;
 end //
 delimiter ;
-SHOW EVENTS;
-/*----------------------------------------------------------------------------------------------------------------------------------------------------------*/
-drop view caradura;
-create view caradura as 
-select cliente.telefono, cliente.nombre, cliente.apellido, pelicula.nombre as pelicula,  fx_adquisicion, alquiler.fx_devolucion, retrasos.dias, retrasos.debido
-from alquiler
-inner join retrasos on alquiler.id_alquiler = retrasos.id_alquiler
-inner join cliente  on alquiler.id_cliente = cliente.id_cliente
-inner join stock  on alquiler.id_stock = stock.id_stock
-inner join pelicula on stock.id_pelicula = pelicula.id_pelicula;
-select * from caradura;
-
-
-select pelicula.nombre from generopelicula
-inner join pelicula on pelicula.id_pelicula = generopelicula.id_pelicula
-inner join genero on genero.id_genero = generopelicula.id_genero 
-where genero.nombre = "accion";
-
-select * from pelicula
-where edad < 10;
+show events;
+select * from cliente
 
 
 

@@ -10,16 +10,37 @@ inner join tienda on tienda.id_tienda = tiendastock.id_tienda
 where tiendastock.num_peliculas > tiendastock.peliculas_alquiladas and pelicula.nombre = nombre;
 end //
 delimiter ;
-call busqueda ("60 segundos")
-
+call busqueda ("60 segundos");
+/*tienda 5- stock 5- */
 
 delimiter //
-create procedure horario (in id_empleado int)
-begin
-select  empleado.nombre,horario.entrada, horario.salida, max(fecha) 
-from empleadohorario 
-inner join empleado on  empleadohorario.id_empleado = empleado.id_empleado
-inner join horario on  empleadohorario.id_horario = horario.id_horario  
-where empleadohorario.id_empleado = id_empleado;
+create trigger automatica
+after update on alquiler
+for each row
+begin 
+declare tiendastock_devuelta int;
+declare alquiladas_devuelta int;
+declare resultada int;
+
+select pelicula_alquiladas into tiendastock_devuelta from tiendastock
+where id_tienda = new.id_tienda and id_stock = new.id_stock;
+
+select devuelta into alquiladas_devuelta from alquiler
+where id_alquiler = new.id_alquiler;
+
+set resultado = tiendastock_devuelta - alquiladas_devuelta;
+
+update tiendastock
+set alquiladas = resultado
+where id_tiendastock = new.id_tiendastock;
 end // 
 delimiter ;
+
+UPDATE alquiler 
+SET cantidad = 'Nuevo Nombre', correo = 'nuevo_correo@example.com'
+WHERE id = 3;
+
+
+select *from alquiler
+
+select * from tiendastock
